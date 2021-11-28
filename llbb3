@@ -1,0 +1,73 @@
+using System;
+
+class Program
+{
+    static void RandMas(int n, int[,] mas)
+    {
+        Random rand = new Random();
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+                mas[i, j] = rand.Next(0, 50);
+
+    }
+
+    static void PrintMas(int n, int[,] mas)
+    {
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++)
+                Console.Write("{0}   ", mas[i, j]);
+            Console.Write("\n");
+        }
+    }
+
+    static void maxminMas(int n, int[,] mas, ref int jmax, ref int jmin)
+    {
+        int TempMax = int.MinValue;
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+                if (mas[i, j] > TempMax)
+                {
+                    jmax = j;
+                    TempMax = mas[i, j];
+                }
+        int TempMin = TempMax;
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+                if (mas[i, j] < TempMin)
+                {
+                    jmin = j;
+                    TempMin = mas[i, j];
+                }
+    }
+
+    static void SwapMas(int jmax, int jmin, int n, int[,] mas)
+    {
+        int[] TempMas = new int[n];
+        if (jmax == jmin) return;
+        for (int i = 0; i < n; i++)
+            TempMas[i] = mas[i, jmax];
+        for (int i = 0; i < n; i++)
+        {
+            mas[i, jmax] = mas[i, jmin];
+            mas[i, jmin] = TempMas[i];
+        }
+    }
+    static void Main(string[] args)
+    {
+        int n = 3;
+
+        int[,] mas = new int[n, n];
+        RandMas(n, mas);
+        PrintMas(n, mas);
+        int jmax = -1, jmin = -1;
+        maxminMas(n, mas, ref jmax, ref jmin);
+        Console.Write("jmax = {0} ", jmax);
+        Console.WriteLine();
+        Console.Write("jmin = {0} ", jmin);
+        Console.WriteLine();
+        SwapMas(jmax, jmin, n, mas);
+        PrintMas(n, mas);
+        Console.ReadKey();
+    }
+}
